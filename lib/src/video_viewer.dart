@@ -50,8 +50,7 @@ class VideoViewer extends StatefulWidget {
 class _VideoViewerState extends State<VideoViewer> {
   /// Quick access to VideoPlayerController, only not null after [TrimmerEvent.initialized]
   /// has been emitted.
-  VideoPlayerController? get videoPlayerController =>
-      widget.trimmer.videoPlayerController;
+  VideoPlayerController? get videoPlayerController => widget.trimmer.videoPlayerController;
 
   @override
   void initState() {
@@ -69,29 +68,22 @@ class _VideoViewerState extends State<VideoViewer> {
     final controller = videoPlayerController;
     return controller == null
         ? Container()
-        : Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: Center(
+        : LayoutBuilder(builder: (context, constraints) {
+            return SizedBox(
+              width: constraints.maxWidth,
+              height: constraints.maxHeight,
               child: AspectRatio(
                 aspectRatio: controller.value.aspectRatio,
                 child: controller.value.isInitialized
-                    ? Container(
-                        foregroundDecoration: BoxDecoration(
-                          border: Border.all(
-                            width: widget.borderWidth,
-                            color: widget.borderColor,
-                          ),
-                        ),
-                        child: VideoPlayer(controller),
-                      )
+                    ? VideoPlayer(controller)
                     : const Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Colors.white,
                         ),
                       ),
               ),
-            ),
-          );
+            );
+          });
   }
 
   @override
