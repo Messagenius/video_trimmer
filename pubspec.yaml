@@ -15,8 +15,8 @@ dependencies:
   get_thumbnail_video:
     git: 
       url: https://github.com/Messagenius/get_video_thumbnail.git
-      ref: cd007f97a4eb331d90c783208a3dc84632663b68
-    # path: ../get_thumbnail_video
+      ref: f6247831bb0e2ee61e6a73b8a9f91dfb24300e2f
+    # path: ../get_video_thumbnail
   flutter_native_video_trimmer: ^1.1.9
   path_provider: ^2.1.5
   intl: ^0.20.2
