@@ -66,24 +66,36 @@ class _VideoViewerState extends State<VideoViewer> {
   @override
   Widget build(BuildContext context) {
     final controller = videoPlayerController;
-    return controller == null
-        ? Container()
-        : LayoutBuilder(builder: (context, constraints) {
-            return SizedBox(
-              width: constraints.maxWidth,
-              height: constraints.maxHeight,
-              child: AspectRatio(
-                aspectRatio: controller.value.aspectRatio,
-                child: controller.value.isInitialized
-                    ? VideoPlayer(controller)
-                    : const Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
-                        ),
+
+    if (controller == null) {
+      return Center(child: Icon(Icons.info_outline, color: Theme.of(context).primaryColor, size: 50));
+    }
+
+    if (!controller.value.isInitialized) {
+      return const Center(child: CircularProgressIndicator(color: Colors.white));
+    }
+
+    return LayoutBuilder(builder: (context, constraints) {
+      return Center(
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Hero(
+            tag: controller.hashCode.toString(),
+            child: controller.value.isInitialized == true
+                ? Center(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: constraints.maxWidth,
+                        maxHeight: constraints.maxHeight,
                       ),
-              ),
-            );
-          });
+                      child: AspectRatio(aspectRatio: controller.value.aspectRatio, child: VideoPlayer(controller)),
+                    ),
+                  )
+                : const SizedBox(),
+          ),
+        ),
+      );
+    });
   }
 
   @override

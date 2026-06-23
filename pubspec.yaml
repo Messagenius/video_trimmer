@@ -17,7 +17,11 @@ dependencies:
       url: https://github.com/Messagenius/get_video_thumbnail.git
       ref: f6247831bb0e2ee61e6a73b8a9f91dfb24300e2f
     # path: ../get_video_thumbnail
-  flutter_native_video_trimmer: ^1.1.9
+  flutter_native_video_trimmer: 
+    git: 
+      url: https://github.com/Messagenius/flutter_native_video_trimmer.git
+      ref: 33d12a2814083346622a817b7d349aea865be721
+    # path: ../flutter_native_video_trimmer
   path_provider: ^2.1.5
   intl: ^0.20.2
   path: ^1.9.1

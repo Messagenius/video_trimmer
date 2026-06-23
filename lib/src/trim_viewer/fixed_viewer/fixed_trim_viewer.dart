@@ -335,18 +335,33 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
     }
   }
 
+  double get _pixelsPerSecond =>
+      _thumbnailViewerW / (_videoDuration / 1000.0);
+
+  /// Converts a pixel x-position to milliseconds in the video timeline.
+  double _dxToMs(double dx) => _videoDuration * (dx / _thumbnailViewerW);
+
+  /// Converts milliseconds to a pixel x-position.
+  double _msToDx(double ms) => _thumbnailViewerW * (ms / _videoDuration);
+
+  /// Snaps milliseconds to the nearest whole second (returns ms).
+  double _snapMsToSecond(double ms) => (ms / 1000.0).round() * 1000.0;
+
   /// Called during dragging, only executed if [_allowDrag] was set to true in
   /// [_onDragStart].
   /// Makes sure the limits are respected.
   void _onDragUpdate(DragUpdateDetails details) {
     if (!_allowDrag) return;
 
+    final minSelectionWidth = _pixelsPerSecond; // 1 second minimum
+
     if (_dragType == EditorDragType.left) {
       _startCircleSize = widget.editorProperties.circleSizeOnDrag;
-      if ((_startPos.dx + details.delta.dx >= 0) &&
-          (_startPos.dx + details.delta.dx <= _endPos.dx) &&
-          !(_endPos.dx - _startPos.dx - details.delta.dx > maxLengthPixels!)) {
-        _startPos += details.delta;
+      final newStartDx = _startPos.dx + details.delta.dx;
+      if ((newStartDx >= 0) &&
+          (newStartDx <= _endPos.dx - minSelectionWidth) &&
+          !(_endPos.dx - newStartDx > maxLengthPixels!)) {
+        _startPos = Offset(newStartDx, _startPos.dy);
         _onStartDragged();
       }
     } else if (_dragType == EditorDragType.center) {
@@ -361,10 +376,11 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
       }
     } else {
       _endCircleSize = widget.editorProperties.circleSizeOnDrag;
-      if ((_endPos.dx + details.delta.dx <= _thumbnailViewerW) &&
-          (_endPos.dx + details.delta.dx >= _startPos.dx) &&
-          !(_endPos.dx - _startPos.dx + details.delta.dx > maxLengthPixels!)) {
-        _endPos += details.delta;
+      final newEndDx = _endPos.dx + details.delta.dx;
+      if ((newEndDx <= _thumbnailViewerW) &&
+          (newEndDx >= _startPos.dx + minSelectionWidth) &&
+          !(newEndDx - _startPos.dx > maxLengthPixels!)) {
+        _endPos = Offset(newEndDx, _endPos.dy);
         _onEndDragged();
       }
     }
@@ -391,11 +407,78 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
     _animationController!.reset();
   }
 
-  /// Drag gesture ended, update UI accordingly.
+  /// Drag gesture ended, snap to whole seconds and update UI.
   void _onDragEnd(DragEndDetails details) {
     setState(() {
       _startCircleSize = widget.editorProperties.circleSize;
       _endCircleSize = widget.editorProperties.circleSize;
+
+      const double minMs = 1000.0;
+      final double maxMs = _videoDuration.toDouble();
+
+      if (_dragType == EditorDragType.left) {
+        var startMs = _snapMsToSecond(_dxToMs(_startPos.dx));
+        final endMs = _videoEndPos;
+        if (endMs - startMs < minMs) {
+          startMs = endMs - minMs;
+        }
+        startMs = startMs.clamp(0.0, maxMs - minMs);
+        _videoStartPos = startMs;
+        _startPos = Offset(_msToDx(startMs), _startPos.dy);
+        _startFraction = _startPos.dx / _thumbnailViewerW;
+        widget.onChangeStart!(_videoStartPos);
+        _linearTween.begin = _startPos.dx;
+        _animationController!.duration =
+            Duration(milliseconds: (_videoEndPos - _videoStartPos).toInt());
+        _animationController!.reset();
+      } else if (_dragType == EditorDragType.right) {
+        var endMs = _snapMsToSecond(_dxToMs(_endPos.dx));
+        final startMs = _videoStartPos;
+        if (endMs - startMs < minMs) {
+          endMs = startMs + minMs;
+        }
+        endMs = endMs.clamp(minMs, maxMs);
+        _videoEndPos = endMs;
+        _endPos = Offset(_msToDx(endMs), _endPos.dy);
+        _endFraction = _endPos.dx / _thumbnailViewerW;
+        widget.onChangeEnd!(_videoEndPos);
+        _linearTween.end = _endPos.dx;
+        _animationController!.duration =
+            Duration(milliseconds: (_videoEndPos - _videoStartPos).toInt());
+        _animationController!.reset();
+      } else {
+        var startMs = _snapMsToSecond(_dxToMs(_startPos.dx));
+        var endMs = _snapMsToSecond(_dxToMs(_endPos.dx));
+
+        if (endMs - startMs < minMs) {
+          endMs = startMs + minMs;
+        }
+        if (startMs < 0) {
+          endMs -= startMs;
+          startMs = 0;
+        }
+        if (endMs > maxMs) {
+          startMs -= (endMs - maxMs);
+          endMs = maxMs;
+        }
+        startMs = startMs.clamp(0.0, maxMs - minMs);
+        endMs = endMs.clamp(minMs, maxMs);
+
+        _videoStartPos = startMs;
+        _videoEndPos = endMs;
+        _startPos = Offset(_msToDx(startMs), _startPos.dy);
+        _endPos = Offset(_msToDx(endMs), _endPos.dy);
+        _startFraction = _startPos.dx / _thumbnailViewerW;
+        _endFraction = _endPos.dx / _thumbnailViewerW;
+        widget.onChangeStart!(_videoStartPos);
+        widget.onChangeEnd!(_videoEndPos);
+        _linearTween.begin = _startPos.dx;
+        _linearTween.end = _endPos.dx;
+        _animationController!.duration =
+            Duration(milliseconds: (_videoEndPos - _videoStartPos).toInt());
+        _animationController!.reset();
+      }
+
       if (_dragType == EditorDragType.right) {
         videoPlayerController
             .seekTo(Duration(milliseconds: _videoEndPos.toInt()));
