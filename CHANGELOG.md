@@ -1,3 +1,20 @@
+## 5.1.0
+
+Desktop support for the trim timeline! 🖥️
+
+#### New features
+
+* The trim timeline (thumbnail strip / scrubber) now renders on **macOS** and **Windows**, matching the mobile experience. Previously the strip was empty on desktop because thumbnail generation had no native implementation there.
+* Thumbnails on desktop are generated natively and FFmpeg-free:
+  - **macOS** via AVFoundation (`AVAssetImageGenerator`).
+  - **Windows** via Media Foundation (`IMFSourceReader`) + WIC.
+* GIF export (`OutputType.gif`), which shares the same thumbnail pipeline, now works on desktop as well.
+
+#### Notes
+
+* Requires `get_thumbnail_video` ≥ 0.8.0 (adds the macOS/Windows implementations).
+* WEBP thumbnails remain unsupported on desktop (JPEG/PNG only); this does not affect the trimmer, which uses JPEG.
+
 ## 5.0.0
 
 Got rid of the `flutter_ffmpeg` package and now uses a **native video trimmer** (Android and iOS)! 🎉

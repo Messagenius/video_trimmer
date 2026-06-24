@@ -78,14 +78,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
-  flutter_native_video_trimmer:
-    dependency: "direct main"
-    description:
-      name: flutter_native_video_trimmer
-      sha256: d31159c34fb4e56fe53919b5b9978f75b5fb4b2934ceb05c6b369929139d3b72
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.9"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -95,11 +87,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: f6247831bb0e2ee61e6a73b8a9f91dfb24300e2f
-      resolved-ref: f6247831bb0e2ee61e6a73b8a9f91dfb24300e2f
+      ref: "4b17ad43339b7b71a2df27c08e5d651f248978f8"
+      resolved-ref: "4b17ad43339b7b71a2df27c08e5d651f248978f8"
       url: "https://github.com/Messagenius/get_video_thumbnail.git"
     source: git
-    version: "0.7.3"
+    version: "0.8.0"
   html:
     dependency: transitive
     description:
@@ -144,10 +136,19 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: "23f08335362185a5ea2ad3a4e597f1375e78bce8a040df5c600c8d3552ef2394"
+      sha256: "1741988757a65eb6b36abe716829688cf01910bbf91c34354ff7ec1c3de2b349"
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.18.0"
+  msg_video_trimmer:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "721b2a719eba5da86407020666021ca09921dffc"
+      resolved-ref: "721b2a719eba5da86407020666021ca09921dffc"
+      url: "https://github.com/Messagenius/msg_video_trimmer.git"
+    source: git
+    version: "1.0.0"
   path:
     dependency: "direct main"
     description:
@@ -346,5 +347,5 @@ packages:
     source: hosted
     version: "6.6.1"
 sdks:
-  dart: ">=3.9.0-0 <4.0.0"
+  dart: ">=3.10.0-0 <4.0.0"
   flutter: ">=3.29.0"

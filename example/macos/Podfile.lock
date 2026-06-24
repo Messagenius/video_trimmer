@@ -1,0 +1,22 @@
+PODS:
+  - FlutterMacOS (1.0.0)
+  - get_thumbnail_video (0.0.1):
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - FlutterMacOS (from `Flutter/ephemeral`)
+  - get_thumbnail_video (from `Flutter/ephemeral/.symlinks/plugins/get_thumbnail_video/macos`)
+
+EXTERNAL SOURCES:
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+  get_thumbnail_video:
+    :path: Flutter/ephemeral/.symlinks/plugins/get_thumbnail_video/macos
+
+SPEC CHECKSUMS:
+  FlutterMacOS: d0db08ddef1a9af05a5ec4b724367152bb0500b1
+  get_thumbnail_video: 657590f94f53c33a18e68c678e3ae7b1ec75de86
+
+PODFILE CHECKSUM: 54d867c82ac51cbd61b565781b9fada492027009
+
+COCOAPODS: 1.16.2
