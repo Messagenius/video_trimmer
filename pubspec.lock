@@ -144,8 +144,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "721b2a719eba5da86407020666021ca09921dffc"
-      resolved-ref: "721b2a719eba5da86407020666021ca09921dffc"
+      ref: "0720eb4782534256fc317c45916c17d080c80fff"
+      resolved-ref: "0720eb4782534256fc317c45916c17d080c80fff"
       url: "https://github.com/Messagenius/msg_video_trimmer.git"
     source: git
     version: "1.0.0"
