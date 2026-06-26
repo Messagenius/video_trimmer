@@ -86,11 +86,9 @@ packages:
   get_thumbnail_video:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "4b17ad43339b7b71a2df27c08e5d651f248978f8"
-      resolved-ref: "4b17ad43339b7b71a2df27c08e5d651f248978f8"
-      url: "https://github.com/Messagenius/get_video_thumbnail.git"
-    source: git
+      path: "../get_video_thumbnail"
+      relative: true
+    source: path
     version: "0.8.0"
   html:
     dependency: transitive

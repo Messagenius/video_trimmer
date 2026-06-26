@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:get_thumbnail_video/index.dart';
 import 'package:get_thumbnail_video/video_thumbnail.dart';
 
@@ -90,7 +91,7 @@ Stream<List<Uint8List?>> generateThumbnail({
         video: videoPath,
         imageFormat: ImageFormat.JPEG,
         timeMs: timestamp,
-        maxHeight: thumbnailHeight.toInt(),
+        maxHeight: !kIsWeb && defaultTargetPlatform == TargetPlatform.windows ? 0 : thumbnailHeight.toInt(),
         quality: quality,
       );
 

@@ -15,7 +15,7 @@ dependencies:
   get_thumbnail_video:
     git:
       url: https://github.com/Messagenius/get_video_thumbnail.git
-      ref: 4b17ad43339b7b71a2df27c08e5d651f248978f8
+      ref: 2dce2ea093b548ee3b9cc283f5d19962aa8544cd
     # path: ../get_video_thumbnail
   msg_video_trimmer: 
     git: 
