@@ -20,7 +20,7 @@ dependencies:
   msg_video_trimmer: 
     git: 
       url: https://github.com/Messagenius/msg_video_trimmer.git
-      ref: 75335b6c2612d133a132f51db3c66d8e83e3768d
+      ref: fbdb6a31fd33ccd7b5118394e0abb93160b56fa7
     # path: ../msg_video_trimmer
   path_provider: ^2.1.5
   intl: ^0.20.2
